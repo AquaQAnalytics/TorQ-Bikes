@@ -44,7 +44,7 @@ fullbikedataprotected:{[] @[fullbikedata;`;{[x] show "Error running fullbikedata
 //Repeat for 14 days - every 30 seconds
 .timer.repeat[.proc.cp[];.proc.cp[]+14D00:00;0D00:00:30;(fullbikedataprotected;`);"belfastbikes"]
 
-//At 6am each day, write down yesterdays data to hdb
+//At 6am each day, write down yesterdays data to hdb, and delete the data in memory from 2 days before
 writedown:{(hsym `$raze"hdb/",string (.z.d-1),`$"/place/") set select from place where time.date=(.z.d-1);
    delete from `place where time.date=(.z.d-2)}
 
