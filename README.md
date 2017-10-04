@@ -12,7 +12,7 @@ Once a database has been created, time-series and other queries can be executed 
 
 
 Basic knowledge of the q programming language and linux commands is assumed.
-This project requires the use of TorQ, which can be downloaded from https://github.com/AquaQAnalytics/TorQ.
+This project requires the use of KDB+ and the [TorQ framework](https://github.com/AquaQAnalytics/TorQ).
 
 ## Getting Started:
 
@@ -96,7 +96,7 @@ uid    | x   name
 1257794| 19  "Belfast City Hospital Lisburn Rd"
 555520 | 17  "Queens University / Botanic Gardens "
 ```
-Or we could query across a range of dates within the database, for example finding out which was docking station was most popular across several days:
+Or we could query across a range of dates within the database, for example finding out which docking station was most popular across several days:
 ```
 q)select max x,Dock:name where x=max x by date from ((select count i by uid,date from d:select from (update d: differ uid by bike_numbers from (ungroup select date,time, uid,bike_numbers from place)) where d,not bike_numbers=0) lj select last name by uid from place)
 date      | x   Dock
