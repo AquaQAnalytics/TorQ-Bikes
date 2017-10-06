@@ -22,7 +22,7 @@ parsedata:{[x]
 	parsed:.xml.p[x]; parsed}
 
 mkplace:{[parsed]
-    iplace: update "I"$'uid, "I"$'number, "I"$'bikes, "I"$'bike_racks, "I"$'free_racks, 0^"I"$'"," vs'bike_numbers, "I"$'place_type, "I"$'rack_locks from delete spot, bike_types, bike from `time xcols select from update time:.z.P from update name:{[x]ssr[x;"^";" "]}'[name] from uj/[enlist each parsed[0;2;0;2;0;2;;1]];
+    iplace: update "F"$'lat, "F"$'lng, "I"$'uid, "I"$'number, "I"$'bikes, "I"$'bike_racks, "I"$'free_racks, 0^"I"$'"," vs'bike_numbers, "I"$'place_type, "I"$'rack_locks from delete spot, bike_types, bike from `time xcols select from update time:.z.P from update name:{[x]ssr[x;"^";" "]}'[name] from uj/[enlist each parsed[0;2;0;2;0;2;;1]];
    `place insert iplace;}
     
 fullbikedata:{
