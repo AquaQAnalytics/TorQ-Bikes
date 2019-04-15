@@ -38,7 +38,7 @@ fullbikedata:{
     .lg.o[1;"Requests complete!"];
     }
 
-fullbikedataprotected:{[] @[fullbikedata;`;{[x] show "Error running fullbikedata",x}]};
+fullbikedataprotected:{[] @[fullbikedata;`;{[x]lg.e[1]"Error running fullbikedata: ",x}]};
 
 
 //Repeat for 14 days - every 30 seconds

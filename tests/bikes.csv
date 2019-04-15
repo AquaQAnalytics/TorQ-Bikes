@@ -1,0 +1,10 @@
+action,ms,bytes,lang,code,repeat,minver,comment
+comment,0,0,q,,0,,Unit tests for TorQ-Bikes
+before,0,0,q,system"t 0",0,,turn timer off
+before,0,0,q,"testdir:hsym`$getenv[`KDBTESTS],"/data"",0,,test data directory
+before,0,0,q,"bike_data:raze read0` sv testdir,`bike_data.xml",,0,,load raw xml data
+before,0,0,q,"parsed_data:get` sv testdir,`parsed_data",,0,,load parsed xml data
+true,0,0,q,parsed_data~parsedata bike_data,0,,test xml parsing
+before,0,0,q,"place_data:get` sv testdir,`place",,0,,load place table
+before,0,0,q,mkplace parsed_data,,0,,extract place table from parsed data
+true,0,0,q,(~).``time _/:(place;place_data),,0,,check place table
