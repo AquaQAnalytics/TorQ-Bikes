@@ -1,8 +1,8 @@
 # Belfast Bikes
 
-## Parsing XML Data from the Nextbike Platform
+## Parsing JSON Data from the Nextbike Platform
 
-Given a semi-public API, what data analysis can we perform?  The nextbike platform provides an xml of raw data, detailing bike availability at each station in the cities and countries where the system exists.  In particular, we have focused on Belfast (city 238) where BelfastBikes has 43 docking stations available to rent a bike from, although we can modify this to be any city on the platform, using the respective city number.
+Given a semi-public API, what data analysis can we perform?  The nextbike platform provides an json of raw data, detailing bike availability at each station in the cities and countries where the system exists.  In particular, we have focused on Belfast (city 238) where BelfastBikes has 43 docking stations available to rent a bike from, although we can modify this to be any city on the platform, using the respective city number.
 
 Using kdb+ we can pull this data periodically off the web and create a time-series database to perform analysis on, made possible by the TorQ framework.  Taking advantage of TorQ's capabilities, the process has been enhanced to include error logging, history logging and an extension of the kdb+ built-in timer, making it repeat until a specified end-time.  Theoretically this allows us to view log files for any date and rebuild the usage of BelfastBikes for any date where we have collected information.
 
@@ -44,7 +44,7 @@ This project requires the use of KDB+ and the [TorQ framework](https://github.co
 You should have a combination of each directories content included in the deploy directory:
 
 	~/deploy$ ls
-        appconfig  aquaq-torq-brochure.pdf  bikes.xml  code  config  docs  hdb  html  lib  LICENSE  logs  mkdocs.yml  README.md  setenv.sh  start_bikes.sh  tests  torq.q  xmllogs     
+        appconfig  aquaq-torq-brochure.pdf  code  config  docs  hdb  html  lib  LICENSE  logs  mkdocs.yml  README.md  setenv.sh  start_bikes.sh  tests  torq.q  jsonlogs     
 	
 ## Configuration
 
@@ -61,7 +61,7 @@ This launches the bikes.q script wrapped in the TorQ framework.
 ## Collecting Data
 The process will run for 14 day once it starts, collecting data every 30 seconds. During the 14 days, there will be a write down to hdb at 6am every day using the previous day's data and saved by date. Within the bikes.q script there are timer functions for both the collection of data and the writedown which can be modified.
 
-The xmllogs directory will contain previously collected data in its raw XML format for each day, saved as a plain text file. 
+The jsonlogs directory will contain previously collected data in its raw JSON format for each day, saved as a plain text file. 
 
 ## Example Usage
 
