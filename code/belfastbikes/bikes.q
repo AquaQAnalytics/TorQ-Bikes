@@ -23,11 +23,6 @@ logbikedata:{[t;f]
     hclose[hdat];
     }
 
-parsedata:{[x]
-    /Use .xml.q p function to parse
-    .xml.p[x]
-    }
-
 mkplace:{[parsed]
     tab:uj/[enlist each parsed[0;2;0;2;0;2;;1]];
     tab:update time:.z.P, name:ssr'[name;"^";" "] from tab;
@@ -44,7 +39,7 @@ fullbikedata:{
     .lg.o[1;"Finished request"];
     logbikedata[.z.P;l];
     .lg.o[1;"Finished logging"];
-    parsed:parsedata[l]; 
+    parsed:.xml.p[l]; 
     .lg.o[1;"Finished parsing"];
     mkplace[parsed];
     .lg.o[1;"Requests complete!"];
