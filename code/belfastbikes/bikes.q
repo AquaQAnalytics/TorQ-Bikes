@@ -1,9 +1,8 @@
-
-params:.Q.opt[.z.x]
+/ Record station info from Next Bike API
 
 request:{
     /Retrieve data from website and save to xml file
-    system[raze"wget -q -O bikes.xml ",params[`webpage],"?city=",params[`cityno]];
+    system[raze"wget -q -O bikes.xml ",.proc.params[`webpage],"?city=",.proc.params[`cityno]];
     /Read contents of xml file
     raze read0`:bikes.xml
     }
@@ -17,7 +16,7 @@ cleandata:{[data]
 
 logbikedata:{[t;f]
    /Open connection to file using current time on request
-   hdat:hopen hsym`$raze[params[`xmllog]],"/","xmllog_",ssr[string[.z.D];".";""],"_",raze params[`cityno],".txt";
+   hdat:hopen hsym`$raze[.proc.params[`xmllog]],"/","xmllog_",ssr[string[.z.D];".";""],"_",raze .proc.params[`cityno],".txt";
    /Write data on single line possibly with time appending each time
    hdat string[t]," -- ", f,"\n";
    /Close connection to file.
