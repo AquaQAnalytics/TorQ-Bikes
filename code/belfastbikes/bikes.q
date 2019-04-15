@@ -1,4 +1,4 @@
-/ Record station info from Next Bike API
+/ Record station info from nextbike API
 
 hdbdir:@[value;`hdbdir;hsym`$getenv`KDBHDB];
 webpage:@[value;webpage;"https://nextbike.net/maps/nextbike-live.json"];
@@ -20,25 +20,30 @@ logbikedata:{[t;f]
 mkplace:{[parsed]
     tab:first[first[parsed`countries]`cities]`places;
     tab:`address`bike_list`spot`bike_types`bike _`time xcols update time:.z.P, name:trim name from tab;
+    /Convert floats to ints where appropriate
     tab:@[tab;`uid`number`bikes`bike_racks`free_racks;`int$];
     tab:@[tab;`place_type`bike_numbers;"I"$];
+    /Insert data into table in memory
     `place insert tab;
     }
     
 fullbikedata:{
-    /Write messages to out logs as requests are processed
+    /Request data from nextbike API
     .lg.o[1;"Starting to make requests"];
     l:request[];
     .lg.o[1;"Finished request"];
+    /Write messages to out logs as requests are processed
     logbikedata[.z.P;l];
     .lg.o[1;"Finished logging"];
+    /Parse JSON string into dictionary
     parsed:.j.k[l]; 
     .lg.o[1;"Finished parsing"];
+    /Convert results to table and add to in memory table
     mkplace[parsed];
     .lg.o[1;"Requests complete!"];
     }
 
-fullbikedataprotected:{[] @[fullbikedata;`;{[x]lg.e[1]"Error running fullbikedata: ",x}]};
+fullbikedataprotected:{[]@[fullbikedata;`;{[x]lg.e[1]"Error running fullbikedata: ",x}]};
 
 
 //Repeat for 14 days - every 30 seconds
