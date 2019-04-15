@@ -1,10 +1,11 @@
 / Record station info from Next Bike API
 
 hdbdir:@[value;`hdbdir;hsym`$getenv`KDBHDB];
+webpage:@[value;webpage;"https://nextbike.net/maps/nextbike-live.xml"];
 
 request:{
     /Retrieve data from website
-    raze system[raze"curl -s ",.proc.params[`webpage],"?city=",.proc.params[`cityno]]
+    raze system[raze"curl -s ",webpage,"?city=",.proc.params[`cityno]]
     }
 
 cleandata:{[data]
@@ -14,13 +15,13 @@ cleandata:{[data]
     }
 
 logbikedata:{[t;f]
-   /Open connection to file using current time on request
-   hdat:hopen hsym`$raze[.proc.params[`xmllog]],"/xmllog_",ssr[string[.z.D];".";""],"_",raze .proc.params[`cityno],".txt";
-   /Write data on single line possibly with time appending each time
-   hdat string[t]," -- ", f,"\n";
-   /Close connection to file.
-   hclose[hdat];
-   }
+    /Open connection to file using current time on request
+    hdat:hopen hsym`$raze[.proc.params[`xmllog]],"/xmllog_",ssr[string[.z.D];".";""],"_",raze .proc.params[`cityno],".txt";
+    /Write data on single line possibly with time appending each time
+    hdat string[t]," -- ", f,"\n";
+    /Close connection to file.
+    hclose[hdat];
+    }
 
 parsedata:{[x]
     /Use .xml.q p function to parse
