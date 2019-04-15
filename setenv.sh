@@ -8,6 +8,7 @@ export KDBLOG=${TORQHOME}/logs
 export KDBHTML=${TORQHOME}/html
 export KDBLIB=${TORQHOME}/lib
 export KDBBASEPORT=14000
+export KDBHDB=${TORQHOME}/hdb
 export KDBTESTS=${TORQHOME}/tests
 export XMLLOG=${TORQHOME}/xmllogs
 export CITYNO=238

@@ -1,22 +1,21 @@
 / Record station info from Next Bike API
 
+hdbdir:@[value;`hdbdir;hsym`$getenv`KDBHDB];
+
 request:{
-    /Retrieve data from website and save to xml file
-    system[raze"wget -q -O bikes.xml ",.proc.params[`webpage],"?city=",.proc.params[`cityno]];
-    /Read contents of xml file
-    raze read0`:bikes.xml
+    /Retrieve data from website
+    raze system[raze"curl -s ",.proc.params[`webpage],"?city=",.proc.params[`cityno]]
     }
 
 cleandata:{[data]
     /Remove any spaces between quotations in preparation for parsing
     pos:o where any (o:where data = " ") within/: 2 cut where "\""=/:data;
-    data[pos]:"^";
-    data
+    @[data;pos;:;"^"]
     }
 
 logbikedata:{[t;f]
    /Open connection to file using current time on request
-   hdat:hopen hsym`$raze[.proc.params[`xmllog]],"/","xmllog_",ssr[string[.z.D];".";""],"_",raze .proc.params[`cityno],".txt";
+   hdat:hopen hsym`$raze[.proc.params[`xmllog]],"/xmllog_",ssr[string[.z.D];".";""],"_",raze .proc.params[`cityno],".txt";
    /Write data on single line possibly with time appending each time
    hdat string[t]," -- ", f,"\n";
    /Close connection to file.
@@ -58,7 +57,7 @@ fullbikedataprotected:{[] @[fullbikedata;`;{[x]lg.e[1]"Error running fullbikedat
 
 //At 6am each day, write down yesterdays data to hdb, and delete the data in memory from 2 days before
 writedown:{
-    (hsym `$raze"hdb/",string (.z.d-1),`$"/place/") set select from place where time.date=(.z.d-1);
+    (` sv .Q.par[hdbdir;.z.d;`place],`) set select from place where time.date=(.z.d-1);
     delete from `place where time.date=(.z.d-2)
     }
 
