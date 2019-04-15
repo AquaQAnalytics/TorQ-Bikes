@@ -10,7 +10,7 @@ export KDBLIB=${TORQHOME}/lib
 export KDBBASEPORT=14000
 export KDBHDB=${TORQHOME}/hdb
 export KDBTESTS=${TORQHOME}/tests
-export XMLLOG=${TORQHOME}/xmllogs
+export JSONLOG=${TORQHOME}/jsonlogs
 export CITYNO=238
 
 # sets the base port for a default TorQ installation
