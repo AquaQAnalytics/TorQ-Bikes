@@ -3,8 +3,8 @@ comment,0,0,q,,0,,Unit tests for TorQ-Bikes
 before,0,0,q,system"t 0",0,,turn timer off
 before,0,0,q,"testdir:hsym`$getenv[`KDBTESTS],"/data"",0,,test data directory
 before,0,0,q,"req:raze read0` sv testdir,`req.json",,0,,load sample request output
-before,0,0,q,"parsed_data:get` sv testdir,`parsed_data",,0,,load parsed xml data
-true,0,0,q,parsed_data~.j.k req,0,,test xml parsing
+before,0,0,q,"parsed_data:get` sv testdir,`parsed_data",,0,,load parsed json data
+true,0,0,q,parsed_data~.j.k req,0,,test json parsing
 before,0,0,q,"place_data:get` sv testdir,`place",,0,,load place table
 before,0,0,q,mkplace parsed_data,,0,,extract place table from parsed data
 true,0,0,q,place_data~``time _place,,0,,check place table

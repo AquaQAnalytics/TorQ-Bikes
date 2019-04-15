@@ -1,7 +1,7 @@
 / Record station info from nextbike API
 
 hdbdir:@[value;`hdbdir;hsym`$getenv`KDBHDB];
-webpage:@[value;webpage;"https://nextbike.net/maps/nextbike-live.json"];
+webpage:@[value;`webpage;"https://nextbike.net/maps/nextbike-live.json"];
 
 request:{
     /Retrieve data from website
