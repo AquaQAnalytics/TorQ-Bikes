@@ -1,12 +1,19 @@
 
 params:.Q.opt[.z.x]
 
-getbikedata:{
+request:{
     /Retrieve data from website and save to xml file
     system[raze"wget -q -O bikes.xml ",params[`webpage],"?city=",params[`cityno]];
+    /Read contents of xml file
+    raze read0`:bikes.xml
+    }
+
+cleandata:{[data]
     /Remove any spaces between quotations in preparation for parsing
-    l:raze read0`:bikes.xml; pos:o where any (o:where l = " ") within/: 2 cut where "\""=/:l;
-    l[pos]:"^";l}
+    pos:o where any (o:where data = " ") within/: 2 cut where "\""=/:data;
+    data[pos]:"^";
+    data
+    }
 
 logbikedata:{[t;f]
    /Open connection to file using current time on request
@@ -18,8 +25,8 @@ logbikedata:{[t;f]
    }
 
 parsedata:{[x]
-    /Use xml.q p function to parse
-	parsed:.xml.p[x]; parsed}
+    /Use .xml.q p function to parse
+    parsed:.xml.p[x]; parsed}
 
 mkplace:{[parsed]
     iplace: update "F"$'lat, "F"$'lng, "I"$'uid, "I"$'number, "I"$'bikes, "I"$'bike_racks, "I"$'free_racks, 0^"I"$'"," vs'bike_numbers, "I"$'place_type, "I"$'rack_locks from delete spot, bike_types, bike from `time xcols select from update time:.z.P from update name:{[x]ssr[x;"^";" "]}'[name] from uj/[enlist each parsed[0;2;0;2;0;2;;1]];
@@ -27,8 +34,8 @@ mkplace:{[parsed]
     
 fullbikedata:{
     /Write messages to out logs as requests are processed
-	.lg.o[1;"Starting to make requests"];
-    l:getbikedata[];
+    .lg.o[1;"Starting to make requests"];
+    l:cleandata request[];
     .lg.o[1;"Finished request"];
     logbikedata[.z.P;l];
     .lg.o[1;"Finished logging"];

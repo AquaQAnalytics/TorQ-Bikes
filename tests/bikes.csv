@@ -2,6 +2,9 @@ action,ms,bytes,lang,code,repeat,minver,comment
 comment,0,0,q,,0,,Unit tests for TorQ-Bikes
 before,0,0,q,system"t 0",0,,turn timer off
 before,0,0,q,"testdir:hsym`$getenv[`KDBTESTS],"/data"",0,,test data directory
+before,0,0,q,"req:raze read0` sv testdir,`req",,0,,load sample request output
+before,0,0,q,"clean_data:raze read0` sv testdir,`clean_data",,0,,load sample cleaned request ouput
+true,0,0,q,"clean_data~cleandata req",,0,,test request output cleaning function
 before,0,0,q,"bike_data:raze read0` sv testdir,`bike_data.xml",,0,,load raw xml data
 before,0,0,q,"parsed_data:get` sv testdir,`parsed_data",,0,,load parsed xml data
 true,0,0,q,parsed_data~parsedata bike_data,0,,test xml parsing
