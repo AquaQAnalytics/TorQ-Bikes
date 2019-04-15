@@ -19,7 +19,7 @@ logbikedata:{[t;f]
 
 mkplace:{[parsed]
     tab:first[first[parsed`countries]`cities]`places;
-    tab:`spot`bike_types`bike _`time xcols update time:.z.P, name:trim name from tab;
+    tab:`address`bike_list`spot`bike_types`bike _`time xcols update time:.z.P, name:trim name from tab;
     iplace:update "i"$uid, "i"$number, "i"$bikes, "i"$bike_racks,
       "i"$free_racks, 0^"I"$bike_numbers, "I"$place_type, "i"$rack_locks from tab;
    `place insert iplace;
