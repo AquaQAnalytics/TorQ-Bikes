@@ -26,11 +26,17 @@ logbikedata:{[t;f]
 
 parsedata:{[x]
     /Use .xml.q p function to parse
-    parsed:.xml.p[x]; parsed}
+    .xml.p[x]
+    }
 
 mkplace:{[parsed]
-    iplace: update "F"$'lat, "F"$'lng, "I"$'uid, "I"$'number, "I"$'bikes, "I"$'bike_racks, "I"$'free_racks, 0^"I"$'"," vs'bike_numbers, "I"$'place_type, "I"$'rack_locks from delete spot, bike_types, bike from `time xcols select from update time:.z.P from update name:{[x]ssr[x;"^";" "]}'[name] from uj/[enlist each parsed[0;2;0;2;0;2;;1]];
-   `place insert iplace;}
+    tab:uj/[enlist each parsed[0;2;0;2;0;2;;1]];
+    tab:update time:.z.P, name:ssr'[name;"^";" "] from tab;
+    iplace:update "F"$lat, "F"$lng, "I"$uid, "I"$number, "I"$bikes, "I"$bike_racks,
+      "I"$free_racks, 0^"I"$","vs'bike_numbers, "I"$place_type, "I"$rack_locks
+      from `spot`bike_types`bike _`time xcols tab;
+   `place insert iplace;
+   }
     
 fullbikedata:{
     /Write messages to out logs as requests are processed
@@ -52,10 +58,9 @@ fullbikedataprotected:{[] @[fullbikedata;`;{[x]lg.e[1]"Error running fullbikedat
 .timer.repeat[.proc.cp[];.proc.cp[]+14D00:00;0D00:00:30;(fullbikedataprotected;`);"belfastbikes"]
 
 //At 6am each day, write down yesterdays data to hdb, and delete the data in memory from 2 days before
-writedown:{(hsym `$raze"hdb/",string (.z.d-1),`$"/place/") set select from place where time.date=(.z.d-1);
-   delete from `place where time.date=(.z.d-2)}
-
-@[writedown;;"writedown failed"]
-
+writedown:{
+    (hsym `$raze"hdb/",string (.z.d-1),`$"/place/") set select from place where time.date=(.z.d-1);
+    delete from `place where time.date=(.z.d-2)
+    }
 
 .timer.repeat[(.z.D+1)+06:00:00.000000;.z.d+14;0D01:00:00;(writedown;`);"dailyWritedownBikes"]
