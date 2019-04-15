@@ -20,10 +20,10 @@ logbikedata:{[t;f]
 mkplace:{[parsed]
     tab:first[first[parsed`countries]`cities]`places;
     tab:`address`bike_list`spot`bike_types`bike _`time xcols update time:.z.P, name:trim name from tab;
-    iplace:update "i"$uid, "i"$number, "i"$bikes, "i"$bike_racks,
-      "i"$free_racks, 0^"I"$bike_numbers, "I"$place_type, "i"$rack_locks from tab;
-   `place insert iplace;
-   }
+    tab:@[tab;`uid`number`bikes`bike_racks`free_racks;`int$];
+    tab:@[tab;`place_type`bike_numbers;"I"$];
+    `place insert tab;
+    }
     
 fullbikedata:{
     /Write messages to out logs as requests are processed
@@ -46,8 +46,8 @@ fullbikedataprotected:{[] @[fullbikedata;`;{[x]lg.e[1]"Error running fullbikedat
 
 //At 6am each day, write down yesterdays data to hdb, and delete the data in memory from 2 days before
 writedown:{
-    (` sv .Q.par[hdbdir;.z.d;`place],`) set select from place where time.date=(.z.d-1);
-    delete from `place where time.date=(.z.d-2)
+    (` sv .Q.par[hdbdir;.z.d;`place],`)set select from place where time.date=.z.d-1;
+    delete from `place where time.date=.z.d-2
     }
 
 .timer.repeat[(.z.D+1)+06:00:00.000000;.z.d+14;0D01:00:00;(writedown;`);"dailyWritedownBikes"]
