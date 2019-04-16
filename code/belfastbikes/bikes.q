@@ -35,15 +35,12 @@ fullbikedata:{
     /Write messages to out logs as requests are processed
     logbikedata[.z.P;l];
     .lg.o[1;"Finished logging"];
-    /Parse JSON string into dictionary
-    parsed:.j.k[l]; 
-    .lg.o[1;"Finished parsing"];
-    /Convert results to table and add to in memory table
-    mkplace[parsed];
+    /Parse JSON into a table and add to in memory table
+    mkplace .j.k l;
     .lg.o[1;"Requests complete!"];
     }
 
-fullbikedataprotected:{[]@[fullbikedata;`;{[x]lg.e[1]"Error running fullbikedata: ",x}]};
+fullbikedataprotected:{[]@[fullbikedata;`;{[x].lg.e[1]"Error running fullbikedata: ",x}]};
 
 
 //Repeat for 14 days - every 30 seconds
