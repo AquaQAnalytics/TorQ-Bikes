@@ -1,5 +1,7 @@
 / Record station info from nextbike API
 
+\d .bikes
+
 hdbdir:@[value;`hdbdir;hsym`$getenv`KDBHDB];
 webpage:@[value;`webpage;"https://nextbike.net/maps/nextbike-live.json"];
 
@@ -94,8 +96,10 @@ eodwritedown:{
   cleardate .z.d-2;
  };
 
+\d .
+
 // Repeat for 14 days - every 30 seconds
-.timer.repeat[.proc.cp[];.proc.cp[]+14D00:00;0D00:00:30;(fullbikedataprotected;`);"belfastbikes"];
+.timer.repeat[.proc.cp[];.proc.cp[]+14D00:00;0D00:00:30;(.bikes.fullbikedataprotected;`);"belfastbikes"];
 
 // At 6am each day, write down yesterdays data to hdb, and delete the data in memory from 2 days before
-.timer.repeat[(.z.D+1)+06:00:00.000000;.z.d+14;0D01:00:00;(eodwritedown;`);"dailyWritedownBikes"];
+.timer.repeat[(.z.D+1)+06:00:00.000000;.z.d+14;0D01:00:00;(.bikes.eodwritedown;`);"dailyWritedownBikes"];
