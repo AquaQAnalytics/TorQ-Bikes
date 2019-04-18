@@ -2,9 +2,14 @@ action,ms,bytes,lang,code,repeat,minver,comment
 comment,0,0,q,,0,,Unit tests for TorQ-Bikes
 before,0,0,q,system"t 0",0,,turn timer off
 before,0,0,q,"testdir:hsym`$getenv[`KDBTESTS],"/data"",0,,test data directory
-before,0,0,q,"req:raze read0` sv testdir,`req.json",,0,,load sample request output
-before,0,0,q,"parsed_data:get` sv testdir,`parsed_data",,0,,load parsed json data
+before,0,0,q,.proc.params[`jsonlog`cityno]:("/tmp";"1234"),0,,set required command line params
+before,0,0,q,"req:raze read0` sv testdir,`req.json",0,,load sample request output
+before,0,0,q,"testlog:read0` sv testdir,`jsonlog.txt",0,,get testlog from disk
+run,0,0,q,logbikedata[2019.01.01D00:00;req],0,,create test log
+true,0,0,q,"testlog~distinct read0 getjsonlog 2019.01.01",0,,compare log output to test data
+after,0,0,q,.os.del getjsonlog 2019.01.01,0,,remove created log
+before,0,0,q,"parsed_data:get` sv testdir,`parsed_data",0,,load parsed json data
 true,0,0,q,parsed_data~.j.k req,0,,test json parsing
-before,0,0,q,"place_data:get` sv testdir,`place",,0,,load place table
-before,0,0,q,mkplace parsed_data,,0,,extract place table from parsed data
-true,0,0,q,place_data~``time _place,,0,,check place table
+before,0,0,q,"place_data:get` sv testdir,`place",0,,load place table
+before,0,0,q,mkplace[2019.01.01D00:00;parsed_data],0,,extract place table from parsed data
+true,0,0,q,place_data~place,0,,check place table
