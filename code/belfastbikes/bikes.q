@@ -22,7 +22,7 @@ getjsonlog:{[d]
 // Log output of API request to file
 logbikedata:{[t;j]
   fn:getjsonlog`date$t;
-  .lg.o[`bikes;"Writing to JSON log: ",f:1_string fn];
+  .lg.o[`bikes;"Writing to JSON log: ",f:.os.pth fn];
   /Open connection to file using current time on request
   hdat:hopen fn;
   /Write data on single line with corresponding time
@@ -35,10 +35,10 @@ logbikedata:{[t;j]
 // Replay a JSON log into memory
 replayjsonlog:{[d]
   if[()~key fn:getjsonlog d;
-    .lg.o[`bikes;"Could not find log file, exiting early: ",1_string fn];
+    .lg.o[`bikes;"Could not find log file, exiting early: ",.os.pth fn];
     :();
   ];
-  .lg.o[`bikes;"Found log file, beginning replay: ",f:1_string fn];
+  .lg.o[`bikes;"Found log file, beginning replay: ",f:.os.pth fn];
   /Replay each line of log file in turn
   {mkplace . readlogline x}'[read0 fn];
   .lg.o[`bikes;"Finished replaying log file: ",f];
@@ -81,7 +81,7 @@ fullbikedataprotected:{[]@[fullbikedata;`;{[x].lg.e[`bikes]"Error running fullbi
 // Write data to disk for date d
 writedown:{[d]
   dir:` sv .Q.par[hdbdir;d;`place],`;
-  .lg.o[`bikes;"Writing data to: ",string dir];
+  .lg.o[`bikes;"Writing data to: ",.os.pth dir];
   dir set select from place where time.date=d;
  };
 
