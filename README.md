@@ -19,7 +19,7 @@ collected information.
 
 Once a database has been created, time-series and other queries can be executed
 against the data.  For example, by rebuilding the table for yesterday's bike
-usage, we can create a mapping of 'routes' that each bike has taken, I.e. where
+usage, we can create a mapping of 'routes' that each bike has taken, i.e. where
 the bike has checked in during those 24 hours and at what time during the day.
 
 ## Requirements
@@ -63,7 +63,7 @@ You should have a combination of each directories content included in the deploy
 ## Configuration
 
 You can change the city that you want to collect data for by changing the city
-number variable in `deploy/setenv.sh`, the default value is 238 (Belfast).
+number variable in `deploy/setenv.sh`; the default value is 238 (Belfast).
 The default port is set at 14000, this can also be modified in the `setenv.sh` script.
 
 ## Launching the Process
@@ -76,7 +76,7 @@ This launches the bikes.q script wrapped in the TorQ framework.
 
 ## Collecting Data
 
-The process will run for 14 day once it starts, collecting data every 30 seconds.
+The process will run for 14 days once it starts, collecting data every 30 seconds.
 During the 14 days, there will be a write down to hdb at 6am every day using the 
 previous day's data and saved by date. Within the bikes.q script there are timer 
 functions for both the collection of data and the writedown which can be modified.
@@ -90,7 +90,7 @@ In order to replay a log file on disk, the following can be used:
 ```
 .bikes.replayjsonlog 2019.01.01
 ```
-This reads the data to the in memory table `place`. Which can then be written to
+This reads the data to the in memory table `place`, which can then be written to
 disk with:
 ```
 .bikes.writedown 2019.01.01
@@ -98,9 +98,9 @@ disk with:
 
 ## Example Usage
 
-To query the persisted data in the hdb, we can either load in a specific date
+To query the persisted data in the HDB, we can either load in a specific date
 partition to a q session, or load the entire database to perform queries across
-a range of dates. To load in the hdb to a q session we can run the following command:
+a range of dates. To load in the HDB to a q session we can run the following command:
 ```
 ~/deploy$ q  hdb/
 ```
