@@ -60,8 +60,6 @@ mkplace:{[t;parsed]
   tab:@[tab;`uid`number`bikes`bike_racks`free_racks;`int$];
   tab:@[tab;`place_type`bike_numbers;"I"$];
   bike_tab:@[bike_tab;`bike_type`boardcomputer;`int$];
-  /Convert data to symbols from strings
-  //bike_tab:@[bike_tab;`name`state;`$];
   .lg.o[`bikes;"Finished parsing JSON, adding to in memory tables"];
   /Insert data into table in memory
   `place insert tab;
