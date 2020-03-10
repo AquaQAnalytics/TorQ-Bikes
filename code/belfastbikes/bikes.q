@@ -9,7 +9,7 @@ webpage:@[value;`webpage;"https://nextbike.net/maps/nextbike-live.json"];
 request:{
   .lg.o[`bikes;"Requesting data from nextbike for city ",c:raze .proc.params`cityno];
   /Retrieve data from website
-  req:raze system"curl -s ",webpage,"?city=",c;
+  req:.Q.hg hsym `$webpage,"?city=",c;
   .lg.o[`bikes;"Returning data for city ",c];
   :req;
  };
@@ -50,16 +50,24 @@ readlogline:{@[;1;.j.k]@[0 29 33 cut x;0;"P"$]0 2};
 // Parse json into in memory table place
 mkplace:{[t;parsed]
   .lg.o[`bikes;"Starting to parse JSON..."]
-  /Extract relevant data from JSON
+  /Extract tables from JSON
   tab:first[first[parsed`countries]`cities]`places;
+  bike_tab:update name: (exec raze (count each bike_list) #' enlist each name from tab) from exec raze bike_list from tab;
+  /Refactor data and extract relevant data
   tab:`address`bike_list`spot`bike_types`bike _`time xcols update time:.z.P^t,name:trim name from tab;
+  bike_tab:`pedelac_battery`battery_pack _ `time`name xcols update time:.z.P^t,name:trim name,number:"I"$number,lock_types:raze lock_types from bike_tab;
   /Convert floats to ints where appropriate
   tab:@[tab;`uid`number`bikes`bike_racks`free_racks;`int$];
   tab:@[tab;`place_type`bike_numbers;"I"$];
-  .lg.o[`bikes;"Finished parsing JSON, adding to in memory table"];
+  bike_tab:@[bike_tab;`bike_type`boardcomputer;`int$];
+  /Convert data to symbols from strings
+  //bike_tab:@[bike_tab;`name`state;`$];
+  .lg.o[`bikes;"Finished parsing JSON, adding to in memory tables"];
   /Insert data into table in memory
   `place insert tab;
   .lg.o[`bikes;"Added data to in memory table: place"];
+  `bike_list insert bike_tab;
+  .lg.o[`bikes;"Added data to in memory table: bike_list"];
  };
 
 // Make request to nextbike API, log to disk and parse into in memory table 
@@ -81,13 +89,17 @@ fullbikedataprotected:{[]@[fullbikedata;`;{[x].lg.e[`bikes]"Error running fullbi
 // Write data to disk for date d
 writedown:{[d]
   dir:` sv .Q.par[hdbdir;d;`place],`;
-  .lg.o[`bikes;"Writing data to: ",.os.pth dir];
-  dir set select from place where time.date=d;
+  bikesdir:` sv .Q.par[hdbdir;d;`bike_list],`;
+  .lg.o[`bikes;"Writing place data to: ",.os.pth dir];
+  .lg.o[`bikes;"Writing bike_list data to: ",.os.pth bikesdir];
+  dir set select from `. `place where time.date=(d);
+  bikesdir set select from `. `bike_list where time.date=(d);
  };
 
 // Clear data for date d
 cleardate:{[d]
   delete from `place where time.date=d;
+  delete from `bike_list where time.date=d;
  };
 
 // Write yesterdays data to disk
