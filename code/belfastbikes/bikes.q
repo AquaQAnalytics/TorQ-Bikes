@@ -55,7 +55,7 @@ mkplace:{[t;parsed]
   bike_tab:update name: (exec raze (count each bike_list) #' enlist each name from tab) from exec raze bike_list from tab;
   /Refactor data and extract relevant data
   tab:`address`bike_list`spot`bike_types`bike _`time xcols update time:.z.P^t,name:trim name from tab;
-  bike_tab:`pedelac_battery`battery_pack _ `time`name xcols update time:.z.P^t,name:trim name,number:"I"$number,lock_types:raze lock_types from bike_tab;
+  bike_tab:`pedelec_battery`battery_pack _ `time`name xcols update time:.z.P^t,name:trim name,number:"I"$number,lock_types:raze lock_types from bike_tab;
   /Convert floats to ints where appropriate
   tab:@[tab;`uid`number`bikes`bike_racks`free_racks;`int$];
   tab:@[tab;`place_type`bike_numbers;"I"$];
@@ -90,14 +90,14 @@ writedown:{[d]
   bikesdir:` sv .Q.par[hdbdir;d;`bike_list],`;
   .lg.o[`bikes;"Writing place data to: ",.os.pth dir];
   .lg.o[`bikes;"Writing bike_list data to: ",.os.pth bikesdir];
-  dir set select from `. `place where time.date=(d);
-  bikesdir set select from `. `bike_list where time.date=(d);
+  dir set select from `..place where time.date=(d);
+  bikesdir set select from `..bike_list where time.date=(d);
  };
 
 // Clear data for date d
 cleardate:{[d]
-  delete from `place where time.date=d;
-  delete from `bike_list where time.date=d;
+  delete from `..place where time.date=d;
+  delete from `..bike_list where time.date=d;
  };
 
 // Write yesterdays data to disk
