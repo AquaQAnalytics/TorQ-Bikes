@@ -58,7 +58,7 @@ This project requires the use of KDB+ and the [TorQ framework](https://github.co
 You should have a combination of each directories content included in the deploy directory:
 
 	~/deploy$ ls
-        appconfig  aquaq-torq-brochure.pdf  code  config  docs  hdb  html  lib  LICENSE  logs  mkdocs.yml  README.md  setenv.sh  start_bikes.sh  tests  torq.q  jsonlogs     
+        appconfig  aquaq-torq-brochure.pdf  code  config  docs  hdb  html  lib  LICENSE  logs  mkdocs.yml  README.md  setenv.sh  start_bikes.sh  stop_bikes.sh  tests  torq.q  jsonlogs     
 	
 ## Configuration
 
