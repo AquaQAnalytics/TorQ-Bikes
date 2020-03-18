@@ -90,8 +90,13 @@ writedown:{[d]
   bikesdir:` sv .Q.par[hdbdir;d;`bike_list],`;
   .lg.o[`bikes;"Writing place data to: ",.os.pth dir];
   .lg.o[`bikes;"Writing bike_list data to: ",.os.pth bikesdir];
-  dir set select from `..place where time.date=(d);
-  bikesdir set select from `..bike_list where time.date=(d);
+  /Checks if directory already exists. Appends data if it does.
+  $[`place in key hsym `$"hdb/", string .z.d;
+    dir insert select from `..place where time.date=(d);
+    dir set select from `..place where time.date=(d)];
+  $[`bike_list in key hsym `$"hdb/", string .z.d;
+    bikesdir insert select from `..bike_list where time.date=(d);
+    bikesdir set select from `..bike_list where time.date=(d)];
  };
 
 // Clear data for date d
