@@ -142,3 +142,11 @@ date      | x   Dock
 2017.09.24| 127 "Donegall Quay"
 2017.09.25| 41  "Alfred Street / St Malachy's Church"
 ```
+
+## Stopping the Process
+
+In order to stop the process, run the `stop_bikes.sh` executable, in the `deploy` folder.
+```
+~/deploy$ ./stop_bikes.sh
+```
+This will save down data collected during the day and kill the process.

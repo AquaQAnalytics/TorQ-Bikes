@@ -16,6 +16,15 @@ if [[ -z $pid  ]];then
 else
   echo "Stopping BelfastBikes..."
   # Writes down data that has arrived during the day.
-  q  code/util/intradaybikeswd.q -q -conn ${KDBRDBPORT}
-  kill -15 $pid
+  q  code/util/intradaybikeswd.q -q -conn hhh
+  if [[ $? = 0  ]]; then 
+    kill -15 $pid
+  else
+    read -p "Todays data has not been saved. Do you still want to proceed?(y/n)" user
+    case $user in
+      [Yy]* ) echo "Proceeding with shutdown...";kill -15 $pid;; 
+      [Nn]* ) echo "Cancelling shutdown.";exit 0 ;;
+      * ) echo "Expected y/n.";;
+    esac
+  fi
 fi
