@@ -1,10 +1,11 @@
 #!/bin/bash
 
-# Load the environment 
+# Load the environment. 
 . ./setenv.sh
 
-# Get the base port
+# Get the base port and rdb port.
 export KDBSTACKID="-stackid ${KDBBASEPORT}"
+export KDBRDBPORT=$(($KDBBASEPORT+1))
 
 # Find the process id.
 pid=$(ps -o pid,args -C q | grep ${KDBBASEPORT} | awk '{print $1}')
@@ -15,6 +16,6 @@ if [[ -z $pid  ]];then
 else
   echo "Stopping BelfastBikes..."
   # Writes down data that has arrived during the day.
-  q  code/util/intradaybikeswd.q -q -conn ${KDBBASEPORT}
+  q  code/util/intradaybikeswd.q -q -conn ${KDBRDBPORT}
   kill -15 $pid
 fi
