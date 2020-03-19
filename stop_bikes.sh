@@ -16,7 +16,7 @@ if [[ -z $pid  ]];then
 else
   echo "Stopping BelfastBikes..."
   # Writes down data that has arrived during the day.
-  q  code/util/intradaybikeswd.q -q -conn hhh
+  q  code/util/intradaybikeswd.q -q -conn ${KDBRDBPORT}
   if [[ $? = 0  ]]; then 
     kill -15 $pid
   else
